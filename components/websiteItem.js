@@ -3,7 +3,7 @@ import {StyleSheet, TouchableOpacity, Text} from 'react-native';
 
 export default function websiteItem({ pressHandler, item }) {
   return (
-    <TouchableOpacity onPress={() => pressHandler(item.key)}>
+    <TouchableOpacity onPress={() => pressHandler({item})}>
       <Text style={styles.item}>{item.text}</Text>
     </TouchableOpacity>
   )

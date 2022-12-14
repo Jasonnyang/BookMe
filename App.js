@@ -1,37 +1,47 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard } from 'react-native';
+import { StyleSheet, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard, Button, Linking } from 'react-native';
 import Header from './components/header';
 import WebsiteItem from './components/websiteItem';
 import AddWebsite from './components/addWebsite';
 import Sandbox from './components/sandbox';
 
 export default function App() {
+  const [edit, setedit] = useState(false);
   const [website, setWebsite] = useState([
-    { text: 'Woodbury 1', key: '1' },
-    { text: 'Woodbury 2', key: '2' },
-    { text: 'Orchard Hills', key: '3' },
+    { text: 'Woodbury 1', url: 'https://aboutreact.com', username:'', password: '', key: '1' },
+    { text: 'Woodbury 2', url: 'https://aboutreact.com', username:'', password: '', key: '2' },
+    { text: 'Orchard Hills', url: 'https://aboutreact.com', username:'', password: '', key: '3' },
   ]);
 
-  const pressHandler = (key) => {
-    setWebsite(prevWebsite => {
-      return prevWebsite.filter(website => website.key != key);
-    });
+  const pressHandler = ({item}) => { return Linking.openURL(item.url);
+    //Change the pressHandler to open a website instead of deleting 
+    //setWebsite(prevWebsite => {       
+        //prevWebsite.filter(website => website.key != key);
+    //});
   };
 
-  const submitHandler = (text) => {
-    if(text.length > 3){
+  const submitHandler = (text, texturl, username, password) => {
+    if(text.length > 0 && texturl.length > 0){
+      a = Math.random().toString()
       setWebsite(prevWebsite => {
         return [
-          { text, key: Math.random().toString() },
+          { text: text, url: texturl, username: username, password: password, key: a },
           ...prevWebsite
         ];
       });
+     
     } else {
-      Alert.alert('OOPS', 'Todo must be over 3 characters long', [
+      Alert.alert('OOPS', 'Enter a valid website and url', [
         {text: 'Understood', onPress: () => console.log('alert closed') }
       ]);
     }
   };
+
+  const buttonHandler = () => {
+    setedit(current => !current)
+    if(edit == true) styles.button.backgroundColor = 'green';
+    else styles.button.backgroundColor = 'red';
+  }
 
   return (
     // <Sandbox />
@@ -43,6 +53,9 @@ export default function App() {
         <Header />
         <View style={styles.content}>
           <AddWebsite submitHandler={submitHandler} />
+          <View style={styles.button}>
+            <Button title="Edit" onPress={() => buttonHandler}/>
+          </View>
           <View style={styles.list}>
             <FlatList
               data={website}
@@ -71,5 +84,8 @@ const styles = StyleSheet.create({
     marginTop: 20,
     //backgroundColor: 'lightgrey',
     flex: 1,
+  },
+  button: {
+    backgroundColor: '#e87c74',
   },
 });
