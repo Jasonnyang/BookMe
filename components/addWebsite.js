@@ -36,23 +36,27 @@ export default function addWebsite({ submitHandler }) {
       <TextInput 
         style={styles.input} 
         placeholder='New website'
+        placeholderTextColor = "grey"
         onChangeText={changewebsiteHandler} 
         value={text} 
       />
       <TextInput 
         style={styles.input} 
+        placeholderTextColor = "grey"
         placeholder='Enter url'
         onChangeText={changeurlHandler} 
         value={texturl} 
       />
       <TextInput 
         style={styles.input} 
+        placeholderTextColor = "grey"
         placeholder='Username'
         onChangeText={changeUsername} 
         value={username} 
       />
       <TextInput 
         style={styles.input} 
+        placeholderTextColor = "grey"
         placeholder='Password'
         onChangeText={changePassword} 
         value={password} 
@@ -69,5 +73,6 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     borderBottomWidth: 1,
     borderBottomColor: '#ddd',
+    placeholderTextColor: 'green',
   },
 });

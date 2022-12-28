@@ -1,24 +1,25 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard, Button, Linking } from 'react-native';
+import { StyleSheet, View, FlatList, Alert, TouchableWithoutFeedback, Keyboard, Button, Linking, Text, Clipboard, TouchableOpacity } from 'react-native';
 import Header from './components/header';
 import WebsiteItem from './components/websiteItem';
 import AddWebsite from './components/addWebsite';
+import Passworditem from './components/passworditem';
 import Sandbox from './components/sandbox';
 
 export default function App() {
   const [edit, setedit] = useState(false);
   const [website, setWebsite] = useState([
-    { text: 'Woodbury 1', url: 'https://aboutreact.com', username:'', password: '', key: '1' },
-    { text: 'Woodbury 2', url: 'https://aboutreact.com', username:'', password: '', key: '2' },
-    { text: 'Orchard Hills', url: 'https://aboutreact.com', username:'', password: '', key: '3' },
+    { text: 'Example', url: 'example.com', username:'username', password: 'password', key: '1' },
   ]);
 
-  const pressHandler = ({item}) => { return Linking.openURL(item.url);
-    //Change the pressHandler to open a website instead of deleting 
-    //setWebsite(prevWebsite => {       
-        //prevWebsite.filter(website => website.key != key);
-    //});
+  const pressHandler = ({item}) => { 
+    Clipboard.setString(item.username)
+    return Linking.openURL(item.url);
   };
+
+  const passwordHandler = ({item}) => { 
+    Clipboard.setString(item.password)
+  }
 
   const submitHandler = (text, texturl, username, password) => {
     if(text.length > 0 && texturl.length > 0){
@@ -49,18 +50,22 @@ export default function App() {
       Keyboard.dismiss();
       console.log('dismissed');
     }}>
+      
       <View style={styles.container}>
         <Header />
         <View style={styles.content}>
           <AddWebsite submitHandler={submitHandler} />
-          <View style={styles.button}>
-            <Button title="Edit" onPress={() => buttonHandler}/>
-          </View>
           <View style={styles.list}>
             <FlatList
               data={website}
               renderItem={({ item }) => (
                 <WebsiteItem item={item} pressHandler={pressHandler} />
+              )}
+            />
+            <FlatList
+              data={website}
+              renderItem={({ item }) => (
+                <Passworditem item={item} passwordHandler={passwordHandler} />
               )}
             />
           </View>
@@ -73,19 +78,15 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#fff', 
   },
   content: {
-    padding: 40,
-    //backgroundColor: 'grey',
+    padding: 20,
     flex: 1,
   },
   list: {
+    flexDirection: "row",
     marginTop: 20,
-    //backgroundColor: 'lightgrey',
     flex: 1,
-  },
-  button: {
-    backgroundColor: '#e87c74',
   },
 });
