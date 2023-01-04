@@ -8,4 +8,4 @@ Ability to press a button to be redirected to the website
 Ability to copy and paste passwords onto clipboard for easy entering on forms 
 
 Technologies used:
-React Native 
+React Native, Javascript
